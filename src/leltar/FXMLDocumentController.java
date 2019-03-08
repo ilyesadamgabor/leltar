@@ -1,9 +1,13 @@
 package leltar;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -15,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -417,6 +422,27 @@ public class FXMLDocumentController implements Initializable {
             ab.terem_be(tblTermek.getItems(), cbxTerem.getItems());
         } else {
             hiba("Hiba!", v);
+        }
+    }
+    
+    @FXML
+    void export(ActionEvent event) {
+        FileChooser fv = new FileChooser();
+        fv.setTitle("Exportálás");
+        FileChooser.ExtensionFilter szuro =
+                new FileChooser.ExtensionFilter("CSV fájl", "*.csv");
+        fv.getExtensionFilters().add(szuro);
+        fv.setInitialDirectory(new File("."));
+        File f = fv.showSaveDialog(null);
+        if(f != null){
+            try (PrintWriter ki = 
+                new PrintWriter(f.getAbsoluteFile(),"cp1250")){
+                tblLeltar.getItems().forEach((t) -> {
+                    ki.println(t);
+                });
+            } catch (IOException ex) {
+                    hiba("Hiba", "nem tudtam menteni");
+            }
         }
     }
     
