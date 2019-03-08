@@ -206,6 +206,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     void leltar_hozzaad() {
+        if (cbxTerem.getValue()==null){
+            hiba("Hiba!", "Válaszd ki a termet");
+        }
+        if (cbxEszkoz.getValue() == null){
+            hiba("Hiba!", "Válaszd ki az eszközt!");
+        }
         int teremid = get_teremid(cbxTerem.getValue());
         int eszkozid = get_eszkozid(cbxEszkoz.getValue());
         Integer ar, ev;
